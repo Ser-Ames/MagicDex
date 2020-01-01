@@ -9,7 +9,7 @@ module.exports = {
                 type.shift()
             }
             if (type.includes("creature")) {
-                return embedStyles.creature(card);
+                return embedStyles.card.creature(card);
             }
             switch (type[0]) {
                 case "planeswalker": {
@@ -61,6 +61,19 @@ module.exports = {
                 else formats.illegal.push(mode.format);
             })
             return embedStyles.format.format(card, formats);
+        }
+    },
+
+    rulings: {
+        rulings(card) {
+            if (card === undefined) return undefined;
+            let rulings = [];
+            if (card.rulings.length > 0) {
+                card.rulings.forEach(rule => {
+                    rulings.push("Date Added: " + rule.date + "\n" + "Rule: " + rule.text)
+                })
+            }
+            return embedStyles.rules.rulings(card, rulings);
         }
     }
 }

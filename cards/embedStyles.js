@@ -205,6 +205,7 @@ module.exports = {
             return embed;
         }
     },
+
     format: {
         format(card, formats) {
             let embed = {
@@ -216,8 +217,21 @@ module.exports = {
             else embed.description += "Legal formats: " + "no legal formats" + "\n"
             if (formats.illegal.length > 0) embed.description += "Illegal formats: " + formats.illegal.join(", ") + "\n\n";
             else embed.description += "Illegal formats: " + "no illegal formats" + "\n\n";
-            embed.description += "*" + "Do `dex.card " + card.name + "` for information about " + card.name + "*";
+            embed.description += "*" + "Use `dex.card " + card.name + "` for card information" + "\n" + "Use `dex.formats " + card.name + "` for the rulings" + "*";
             return embed
+        }
+    },
+    rules: {
+        rulings(card, rulings) {
+            let embed = {
+                "title": "Rulings For " + card.name,
+                "color": "3092790",
+                "description": ""
+            }
+            rulings = rulings.join("\n\n");
+            embed.description += rulings + "\n\n";
+            embed.description += "*" + "Use `dex.card " + card.name + "` for card information" + "\n" + "Use `dex.formats " + card.name + "` for legal formats" + "*";
+            return embed;
         }
     }
 }

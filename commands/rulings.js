@@ -17,19 +17,19 @@ module.exports = {
         cards.forEach(c => {
             if (c.name.toLowerCase() == name.toLowerCase()) card.push(c)
         })
-        let embed = await validation.format.format(card[0]);
+        let embed = await validation.rulings.rulings(card[0]);
         if (embed === undefined) return response.edit(msg.author.mention + ", invalid card! Please make sure that your card spelling is correct!");
         else response.edit({
-            content: "Card formats found!",
+            content: "Card rulings found!",
             embed: embed
         })
     },
-    name: "format",
+    name: "rulings",
     options: {
-        aliases: ["formats"],
-        description: "shows you the legal formats for a specified card",
-        fullDescription: "shows you the legal formats for a specified card",
-        usage: "(card name)",
+        aliases: ["rules"],
+        description: "",
+        fullDescription: "",
+        usage: "",
         caseInsensitive: true,
         argsRequired: false,
         hidden: false,
