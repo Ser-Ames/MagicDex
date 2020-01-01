@@ -1,8 +1,10 @@
 const fetch = require("node-fetch");
 
 module.exports = {
-    search(params) {
-        fetch(params)
+    async search(params) {
+        let search = await fetch(params)
+        let data = await search.json()
+        return this.parseData(data)
     },
 
     parseArgs(args) {
@@ -12,7 +14,34 @@ module.exports = {
         if (args.cmc) params += "cmc=" + args.cmc + "&"
         if (args.colors) params += "colors=" + args.colors + "&";
         if (args.coloridentity) {
-            let coloridentity = args.coloridentity.replace(/red/gi, "R").replace(/green/gi, "G").replace(/blue/gi, "U").replace(/black/gi, "B").replace(/white/gi, "W")
+            let coloridentity = args.coloridentity.split(" ");
+            coloridentity.forEach((color, index) => {
+                switch (color) {
+                    case "red": {
+                        coloridentity[index] = color.replace(/red/gi, "R")
+                        break;
+                    }
+                    case "green": {
+                        coloridentity[index] = color.replace(/green/gi, "G")
+                        break;
+                    }
+                    case "blue": {
+                        coloridentity[index] = color.replace(/blue/gi, "U")
+                        break;
+                    }
+                    case "black": {
+                        coloridentity[index] = color.replace(/black/gi, "B")
+                        break;
+                    }
+                    case "white": {
+                        coloridentity[index] = color.replace(/white/gi, "W")
+                        break
+                    }
+                    default: {
+                        delete coloridentity[index]
+                    }
+                }
+            })
             params += "colorIdentity=" + coloridentity + "&";
         }
         if (args.supertypes) params += "supertypes=" + args.supertypes + "&";
@@ -28,13 +57,28 @@ module.exports = {
         if (args.power) params += "power=" + args.power + "&";
         if (args.toughness) params += "toughness=" + args.toughness + "&";
         if (args.loyalty) params += "loyalty=" + args.loyalty + "&";
-        if (args.language) params += "language=" + args.language + "&";
         if (args.gameformat) params += "gameFormat=" + args.gameformat + "&";
-        if (args.legality) params += "legality=" + args.legality + "&";
-        if (args.orderby) params += "orderBy=" + args.orderby + "&";
-        if (args.random) params += "random=" + args.random + "&";
         if (args.id) params += "id=" + args.id + "&";
         if (args.multiverseid) params += "multiverseid=" + args.multiverseid + "&";
-        return params
+        return this.search(params)
+    },
+
+    parseData(data) {
+        data = data.cards
+        let results = []
+        data.forEach(c => {
+            if (results.includes(c.name)) return
+            results.push(c.name)
+        });
+
+        let embed = {
+            "title": `Results of Power Search`,
+            "color": "3092790",
+            "description": ""
+        }
+        if (results.length === 0) embed.description += "There are no cards that matched your parameters.";
+        else embed.description += results.join("\n") + "\n\n"
+        embed.description += "*For any of these results, use `dex.card (card name)` for information on a specific card.*"
+        return embed
     }
 }
