@@ -27,9 +27,9 @@ module.exports = {
     name: "rulings",
     options: {
         aliases: ["rules"],
-        description: "",
-        fullDescription: "",
-        usage: "",
+        description: "shows the rulings of a specific card",
+        fullDescription: "shows the rulings of a specific card",
+        usage: "(card name)",
         caseInsensitive: true,
         argsRequired: false,
         hidden: false,

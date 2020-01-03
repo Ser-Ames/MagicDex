@@ -3,25 +3,22 @@ const eris = require("eris")
 module.exports = {
 
     guildCreate(guild, client) {
-        this.updatePresence(client)
+        this.updateStatus(client)
     },
 
     guildDelete(guild, client) {
-        this.updatePresence(client)
+        this.updateStatus(client)
     },
 
     ready(client) {
         let d = new Date(Date.now())
         console.log(`[${d.toTimeString().slice(0, 8)}] ${client.user.username} is online!`);
-        client.editStatus(`online`, {
-            name: `in ${client.guilds.size} servers!`,
-            type: 0
-        })
+        this.updateStatus(client)
     },
 
-    updatePresence(client) {
+    updateStatus(client) {
         client.editStatus(`online`, {
-            name: `${client.guilds.size} Servers!`,
+            name: `in ${client.guilds.size} servers!`,
             type: 0
         })
     }

@@ -8,6 +8,7 @@ const eris = require("eris"),
 module.exports = {
     run: async (msg, args) => {
         args = argsFlags(args);
+        if (args.length == 0) return msg.channel.createMessage(msg.author.mention + ", please add some search terms to your search!")
         let response = await msg.channel.createMessage("Fetching cards with your parameters, please wait...");
         let embed = await powersearch.parseArgs(args);
         response.edit({
